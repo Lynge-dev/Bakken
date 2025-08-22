@@ -1,4 +1,4 @@
-// Game data and state
+// Game data and state - FIXED to load real data
 const availableGames = [
     'Andedammen', 'Revolver skydebane', 'Dart', 'Bonanza', 'Boom ball',
     'Bueskydning', 'Delfinspillet', 'Fodbold', 'Fodbolddart', 'Golf',
@@ -6,14 +6,10 @@ const availableGames = [
     'Øksekast', 'Andet1', 'Andet2', 'Andet3', 'Andet4'
 ];
 
-// Test team data - in real app this would come from previous screen
-const teams = {
-    1: { name: 'Hold 1', members: ['Lars', 'Mette', 'Peter'], score: 0 },
-    2: { name: 'Hold 2', members: ['Anna', 'Thomas'], score: 0 },
-    3: { name: 'Hold 3', members: ['Sofie', 'Michael'], score: 0 }
-};
-
-let completedGamesList = []; // Changed name to avoid conflict
+// Real data loaded from localStorage
+let teams = {};
+let players = [];
+let completedGamesList = [];
 let currentGame = null;
 let gameResults = {}; // { place: teamId }
 
@@ -25,27 +21,133 @@ const standingsGrid = document.getElementById('standingsGrid');
 const currentGameName = document.getElementById('currentGameName');
 const confirmResultBtn = document.getElementById('confirmResultBtn');
 const cancelGameBtn = document.getElementById('cancelGameBtn');
-const completedGamesContainer = document.getElementById('completedGames'); // Changed name
+const completedGamesContainer = document.getElementById('completedGames');
 const completedCount = document.getElementById('completedCount');
 const finishTournamentBtn = document.getElementById('finishTournamentBtn');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page loaded, initializing...'); // Debug log
+    console.log('🎯 Games page loaded');
+    loadRealData();
     renderGamesGrid();
     renderStandings();
     setupEventListeners();
     updateCompletedGames();
 });
 
+function loadRealData() {
+    console.log('📥 Loading real data from localStorage...');
+    
+    // Load players
+    try {
+        const playersData = localStorage.getItem('bakken-players');
+        if (playersData) {
+            players = JSON.parse(playersData);
+            console.log('✅ Loaded players:', players);
+        } else {
+            console.log('⚠️ No players found');
+            players = [];
+        }
+    } catch (e) {
+        console.error('❌ Failed to load players:', e);
+        players = [];
+    }
+
+    // Load teams
+    try {
+        const teamsData = localStorage.getItem('bakken-teams');
+        if (teamsData) {
+            const teamInfo = JSON.parse(teamsData);
+            const teamAssignments = teamInfo.teams || {};
+            const teamNames = teamInfo.teamNames || {};
+            
+            console.log('✅ Loaded team assignments:', teamAssignments);
+            console.log('✅ Loaded team names:', teamNames);
+            
+            // Convert to the format games expects
+            teams = {};
+            [1, 2, 3].forEach(teamId => {
+                const playerIds = teamAssignments[teamId] || [];
+                const teamMembers = playerIds.map(playerId => {
+                    const player = players.find(p => p.id === playerId);
+                    return player ? player.name : 'Unknown';
+                }).filter(name => name !== 'Unknown');
+                
+                teams[teamId] = {
+                    name: teamNames[teamId] || `Hold ${teamId}`,
+                    members: teamMembers,
+                    score: 0
+                };
+            });
+            
+            console.log('✅ Converted teams for games:', teams);
+        } else {
+            console.log('⚠️ No teams found, using defaults');
+            teams = {
+                1: { name: 'Hold 1', members: [], score: 0 },
+                2: { name: 'Hold 2', members: [], score: 0 },
+                3: { name: 'Hold 3', members: [], score: 0 }
+            };
+        }
+    } catch (e) {
+        console.error('❌ Failed to load teams:', e);
+        teams = {
+            1: { name: 'Hold 1', members: [], score: 0 },
+            2: { name: 'Hold 2', members: [], score: 0 },
+            3: { name: 'Hold 3', members: [], score: 0 }
+        };
+    }
+
+    // Load completed games
+    try {
+        const gamesData = localStorage.getItem('bakken-games');
+        if (gamesData) {
+            const gameInfo = JSON.parse(gamesData);
+            completedGamesList = gameInfo.completedGames || [];
+            
+            // Restore team scores
+            if (gameInfo.teamScores) {
+                Object.keys(gameInfo.teamScores).forEach(teamId => {
+                    if (teams[teamId]) {
+                        teams[teamId].score = gameInfo.teamScores[teamId];
+                    }
+                });
+            }
+            
+            console.log('✅ Loaded completed games:', completedGamesList);
+        }
+    } catch (e) {
+        console.error('❌ Failed to load games:', e);
+        completedGamesList = [];
+    }
+}
+
+function saveGameData() {
+    try {
+        const teamScores = {};
+        Object.keys(teams).forEach(teamId => {
+            teamScores[teamId] = teams[teamId].score;
+        });
+        
+        const gameData = {
+            completedGames: completedGamesList,
+            teamScores: teamScores
+        };
+        
+        localStorage.setItem('bakken-games', JSON.stringify(gameData));
+        console.log('💾 Saved game data:', gameData);
+    } catch (e) {
+        console.error('❌ Failed to save game data:', e);
+    }
+}
+
 function setupEventListeners() {
-    console.log('Setting up event listeners...'); // Debug log
+    console.log('Setting up event listeners...');
     
     // Game selection
     gamesGrid.addEventListener('click', function(e) {
-        console.log('Game grid clicked:', e.target); // Debug log
         if (e.target.classList.contains('game-option') && !e.target.classList.contains('completed')) {
-            console.log('Starting game:', e.target.dataset.game); // Debug log
+            console.log('Starting game:', e.target.dataset.game);
             startGame(e.target.dataset.game);
         }
     });
@@ -53,7 +155,7 @@ function setupEventListeners() {
     // Team selection for places
     document.querySelectorAll('.team-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log('Team button clicked:', this.dataset.team, this.closest('.winner-card').dataset.place); // Debug log
+            console.log('Team button clicked:', this.dataset.team, this.closest('.winner-card').dataset.place);
             selectTeamForPlace(this.dataset.team, this.closest('.winner-card').dataset.place);
         });
     });
@@ -63,8 +165,8 @@ function setupEventListeners() {
     cancelGameBtn.addEventListener('click', cancelGame);
     
     // Navigation
-    document.getElementById('backToTeamsBtn').addEventListener('click', function() {
-        alert('Går tilbage til hold-siden');
+    document.getElementById('backToTeamsBtn')?.addEventListener('click', function() {
+        window.location.href = 'simple-teams.html';
     });
     
     finishTournamentBtn.addEventListener('click', function() {
@@ -75,14 +177,13 @@ function setupEventListeners() {
 }
 
 function renderGamesGrid() {
-    console.log('Rendering games grid...'); // Debug log
+    const completedGameNames = completedGamesList.map(game => game.name || game);
     gamesGrid.innerHTML = availableGames.map(game => `
-        <div class="game-option ${completedGamesList.includes(game) ? 'completed' : ''}" 
+        <div class="game-option ${completedGameNames.includes(game) ? 'completed' : ''}" 
              data-game="${game}">
             ${game}
         </div>
     `).join('');
-    console.log('Games grid rendered'); // Debug log
 }
 
 function renderStandings() {
@@ -117,7 +218,7 @@ function getPositionClass(position) {
 }
 
 function startGame(gameName) {
-    console.log('Starting game:', gameName); // Debug log
+    console.log('Starting game:', gameName);
     currentGame = gameName;
     gameResults = {};
     
@@ -140,7 +241,7 @@ function startGame(gameName) {
 }
 
 function selectTeamForPlace(teamId, place) {
-    console.log('Selecting team', teamId, 'for place', place); // Debug log
+    console.log('Selecting team', teamId, 'for place', place);
     
     // Remove this team from other places
     Object.keys(gameResults).forEach(p => {
@@ -172,7 +273,7 @@ function updateTeamButtonStates() {
     // Update based on current selections
     Object.entries(gameResults).forEach(([place, teamId]) => {
         const card = document.querySelector(`[data-place="${place}"]`);
-        const btn = card.querySelector(`[data-team="${teamId}"]`);
+        const btn = card?.querySelector(`[data-team="${teamId}"]`);
         
         if (btn) {
             btn.classList.add('selected');
@@ -206,8 +307,11 @@ function confirmGameResult() {
     completedGamesList.push({
         name: currentGame,
         results: { ...gameResults },
-        timestamp: new Date()
+        timestamp: new Date().toISOString()
     });
+    
+    // Save data
+    saveGameData();
     
     // Update UI
     renderStandings();
@@ -245,11 +349,12 @@ function updateCompletedGames() {
     }
     
     completedGamesContainer.innerHTML = completedGamesList.map(game => {
-        const winner = teams[game.results[1]];
+        const gameData = typeof game === 'string' ? { name: game } : game;
+        const winner = gameData.results ? teams[gameData.results[1]] : null;
         return `
             <div class="completed-game">
-                <div class="completed-game-name">${game.name}</div>
-                <div class="completed-game-result">Vinder: ${winner.name}</div>
+                <div class="completed-game-name">${gameData.name}</div>
+                <div class="completed-game-result">${winner ? `Vinder: ${winner.name}` : 'Resultat gemt'}</div>
             </div>
         `;
     }).join('');
