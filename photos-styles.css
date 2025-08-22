@@ -40,6 +40,30 @@ body {
     font-size: 1rem;
     color: #fff;
     opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Navigation */
+.navigation-section {
+    margin-bottom: 10px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Mode Selector */
@@ -61,22 +85,31 @@ body {
     border: none;
     border-radius: 10px;
     background: transparent;
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
-    font-weight: 500;
     text-align: center;
 }
 
 .mode-tab.active {
     background: #4ECDC4;
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(78, 205, 196, 0.3);
+    box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
 }
 
-.mode-tab:not(.active):hover {
-    background: rgba(78, 205, 196, 0.1);
+.mode-tab:hover:not(.active) {
+    background: #f0f0f0;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* Photo Modes */
@@ -88,52 +121,52 @@ body {
     display: block;
 }
 
-.section-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Photo Cards */
+/* Group Photo Mode */
 .photo-card {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 15px;
-}
-
-.group-photo-card {
-    text-align: center;
 }
 
 .photo-preview {
     width: 100%;
     height: 200px;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 15px;
-    position: relative;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .photo-preview:hover {
     transform: scale(1.02);
 }
 
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .photo-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #dee2e6;
-    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.photo-placeholder:hover {
+    border-color: #4ECDC4;
+    background: rgba(78, 205, 196, 0.05);
 }
 
 .placeholder-icon {
@@ -153,30 +186,25 @@ body {
     font-size: 0.8rem;
 }
 
-.photo-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
+.photo-info {
+    margin-bottom: 15px;
 }
 
 .photo-info h3 {
-    font-size: 1.2rem;
-    color: #333;
+    font-size: 1.1rem;
     margin-bottom: 8px;
+    color: #333;
 }
 
 .participants-list {
     color: #666;
     font-size: 0.9rem;
     line-height: 1.4;
-    margin-bottom: 15px;
 }
 
-/* Photo Actions */
 .photo-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
@@ -186,10 +214,10 @@ body {
     padding: 12px;
     border: none;
     border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
-    font-size: 0.9rem;
 }
 
 .photo-btn.camera {
@@ -203,14 +231,13 @@ body {
 }
 
 .photo-btn.upload {
-    background: #f8f9fa;
-    color: #666;
-    border: 2px solid #e9ecef;
+    background: #45B7D1;
+    color: white;
 }
 
 .photo-btn.upload:hover {
-    background: #e9ecef;
-    border-color: #dee2e6;
+    background: #42A5F5;
+    transform: translateY(-2px);
 }
 
 .photo-btn.delete {
@@ -223,7 +250,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Teams Photo Grid */
+/* Team Photos Mode */
 .teams-photo-grid {
     display: flex;
     flex-direction: column;
@@ -231,9 +258,6 @@ body {
 }
 
 .team-photo-card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     padding: 15px;
@@ -241,17 +265,17 @@ body {
 }
 
 .team-photo-preview {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 150px;
     border-radius: 10px;
     overflow: hidden;
-    flex-shrink: 0;
+    margin-bottom: 15px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .team-photo-preview:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .team-photo-preview img {
@@ -263,31 +287,36 @@ body {
 .team-photo-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #dee2e6;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    opacity: 0.6;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.team-photo-info {
-    flex: 1;
+.team-photo-placeholder:hover {
+    border-color: #4ECDC4;
+    background: rgba(78, 205, 196, 0.05);
 }
 
 .team-photo-info h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 1.1rem;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    color: #333;
 }
 
-.team-photo-info .team-color-indicator {
+.team-color-indicator {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
 }
 
 .team-1-color { background: #FF6B6B; }
@@ -297,27 +326,49 @@ body {
 .team-members {
     color: #666;
     font-size: 0.9rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    line-height: 1.4;
 }
 
 .team-photo-actions {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .team-photo-btn {
-    padding: 8px 12px;
+    flex: 1;
+    min-width: 80px;
+    padding: 10px 8px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
     font-size: 0.8rem;
     font-weight: 500;
-    min-width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* Export Options */
+.team-photo-btn.camera {
+    background: #4ECDC4;
+    color: white;
+}
+
+.team-photo-btn.upload {
+    background: #45B7D1;
+    color: white;
+}
+
+.team-photo-btn.delete {
+    background: #FF6B6B;
+    color: white;
+}
+
+.team-photo-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+/* Export Mode */
 .export-options {
     display: flex;
     flex-direction: column;
@@ -333,51 +384,53 @@ body {
 }
 
 .export-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-bottom: 10px;
     color: #333;
 }
 
 .export-card p {
     color: #666;
+    font-size: 0.9rem;
     margin-bottom: 15px;
     line-height: 1.4;
 }
 
 .export-btn {
-    padding: 12px 20px;
+    width: 100%;
+    padding: 12px;
     border: none;
     border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
-    background: #f8f9fa;
-    color: #666;
-    border: 2px solid #e9ecef;
-}
-
-.export-btn:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
+    background: #45B7D1;
+    color: white;
 }
 
 .export-btn.primary {
     background: #4ECDC4;
-    color: white;
-    border-color: #4ECDC4;
+    font-size: 1rem;
+    padding: 15px;
 }
 
-.export-btn.primary:hover {
-    background: #45B7D1;
+.export-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
 
-/* Export Preview */
 .export-preview {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     margin-top: 20px;
+}
+
+.export-preview h3 {
+    margin-bottom: 15px;
+    color: #333;
 }
 
 .preview-content {
@@ -387,6 +440,7 @@ body {
     margin-bottom: 15px;
     max-height: 300px;
     overflow-y: auto;
+    font-size: 0.8rem;
 }
 
 .preview-actions {
@@ -426,15 +480,16 @@ body {
 }
 
 .modal-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #e9ecef;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
 }
 
 .modal-header h3 {
     margin: 0;
+    color: #333;
 }
 
 .close-btn {
@@ -442,14 +497,15 @@ body {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #666;
+    color: #999;
     padding: 5px;
     border-radius: 50%;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-    background: #f8f9fa;
+    background: #f0f0f0;
+    color: #666;
 }
 
 .modal-body {
@@ -460,44 +516,6 @@ body {
     width: 100%;
     height: auto;
     display: block;
-}
-
-/* Navigation */
-.navigation-section {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.nav-btn {
-    flex: 1;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.nav-btn.primary {
-    background: #4ECDC4;
-    color: white;
-}
-
-.nav-btn.primary:hover {
-    background: #45B7D1;
-    transform: translateY(-2px);
-}
-
-.nav-btn.secondary {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.nav-btn.secondary:hover {
-    background: rgba(255, 255, 255, 0.3);
 }
 
 /* Mobile Optimizations */
@@ -512,7 +530,7 @@ body {
     }
     
     .mode-tab {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         padding: 10px 6px;
     }
     
@@ -524,18 +542,69 @@ body {
         min-width: auto;
     }
     
-    .team-photo-card {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .team-photo-preview {
-        width: 100px;
-        height: 100px;
-    }
-    
     .team-photo-actions {
-        flex-direction: row;
-        justify-content: center;
+        flex-direction: column;
     }
+    
+    .team-photo-btn {
+        min-width: auto;
+    }
+    
+    .preview-actions {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.photo-card,
+.team-photo-card,
+.export-card {
+    animation: slideIn 0.5s ease;
+}
+
+.photo-card:nth-child(1) { animation-delay: 0.1s; }
+.team-photo-card:nth-child(2) { animation-delay: 0.2s; }
+.team-photo-card:nth-child(3) { animation-delay: 0.3s; }
+.export-card:nth-child(1) { animation-delay: 0.1s; }
+.export-card:nth-child(2) { animation-delay: 0.2s; }
+.export-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #4ECDC4;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
