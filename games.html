@@ -19,11 +19,9 @@
             <a href="simple-teams.html" class="nav-btn secondary">
                 ← Tilbage til Hold
             </a>
-                </a>
-    <a href="photos.html" class="nav-btn primary">
-        Næste: Fotos →
-    </a>
-</section>
+            <a href="photos.html" class="nav-btn primary">
+                Næste: Fotos →
+            </a>
         </section>
 
         <!-- Game Selection View -->
@@ -36,19 +34,25 @@
                 </div>
             </section>
 
-            <!-- Games Grid -->
-            <section class="games-section">
-                <h2 class="section-title">🎯 Vælg Spil</h2>
-                <div id="gamesGrid" class="games-grid">
-                    <!-- Games will be populated here -->
+            <!-- Add New Game -->
+            <section class="add-game-section">
+                <h2 class="section-title">➕ Tilføj Nyt Spil</h2>
+                <div class="add-game-card">
+                    <div class="input-group">
+                        <input type="text" id="gameNameInput" placeholder="Indtast spilnavn (f.eks. Andedammen, Dart, Golf)" maxlength="30">
+                        <button id="addGameBtn" class="add-game-btn">
+                            🎯 Tilføj Spil
+                        </button>
+                    </div>
+                    <p class="add-game-hint">Tilføj et spil og tildel placeringer til holdene</p>
                 </div>
             </section>
 
             <!-- Completed Games -->
             <section class="completed-section">
                 <h3 class="section-title">
-                    ✅ Gennemført 
-                    <span class="completed-badge" id="completedCount">0</span>/10
+                    ✅ Gennemførte Spil
+                    <span class="completed-badge" id="completedCount">0</span>
                 </h3>
                 <div id="completedGames" class="completed-games">
                     <p class="no-games">Ingen spil gennemført endnu</p>
@@ -60,6 +64,7 @@
                 <button id="finishTournamentBtn" class="finish-btn" disabled>
                     🏆 Afslut Konkurrence
                 </button>
+                <p class="finish-hint">Gennemfør mindst 5 spil for at afslutte</p>
             </section>
         </div>
 
@@ -124,15 +129,7 @@
     </div>
 
     <script>
-        // Game data and state - FIXED to load real data
-        const availableGames = [
-            'Andedammen', 'Revolver skydebane', 'Dart', 'Bonanza', 'Boom ball',
-            'Bueskydning', 'Delfinspillet', 'Fodbold', 'Fodbolddart', 'Golf',
-            'Hønen', 'Håndboldspillet', 'Basket', 'Mini bowling', 'Dåsekast',
-            'Øksekast', 'Andet1', 'Andet2', 'Andet3', 'Andet4'
-        ];
-
-        // Real data loaded from localStorage
+        // Custom game management system
         let teams = {};
         let players = [];
         let completedGamesList = [];
@@ -142,7 +139,6 @@
         // DOM elements
         const gameSelectionView = document.getElementById('gameSelectionView');
         const activeGameView = document.getElementById('activeGameView');
-        const gamesGrid = document.getElementById('gamesGrid');
         const standingsGrid = document.getElementById('standingsGrid');
         const currentGameName = document.getElementById('currentGameName');
         const confirmResultBtn = document.getElementById('confirmResultBtn');
@@ -150,29 +146,28 @@
         const completedGamesContainer = document.getElementById('completedGames');
         const completedCount = document.getElementById('completedCount');
         const finishTournamentBtn = document.getElementById('finishTournamentBtn');
+        const gameNameInput = document.getElementById('gameNameInput');
+        const addGameBtn = document.getElementById('addGameBtn');
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎯 Games page loaded - FIXED VERSION');
+            console.log('🎯 Custom Games page loaded');
             loadRealData();
-            renderGamesGrid();
             renderStandings();
             setupEventListeners();
             updateCompletedGames();
+            updateFinishButton();
         });
 
         function loadRealData() {
-            console.log('📥 Loading real data from localStorage...');
+            console.log('📥 Loading real data for games...');
             
             // Load players
             try {
                 const playersData = localStorage.getItem('bakken-players');
                 if (playersData) {
                     players = JSON.parse(playersData);
-                    console.log('✅ Loaded players:', players);
-                } else {
-                    console.log('⚠️ No players found');
-                    players = [];
+                    console.log('✅ Loaded players for games:', players);
                 }
             } catch (e) {
                 console.error('❌ Failed to load players:', e);
@@ -187,10 +182,7 @@
                     const teamAssignments = teamInfo.teams || {};
                     const teamNames = teamInfo.teamNames || {};
                     
-                    console.log('✅ Loaded team assignments:', teamAssignments);
-                    console.log('✅ Loaded team names:', teamNames);
-                    
-                    // Convert to the format games expects
+                    // Convert to format games expects
                     teams = {};
                     [1, 2, 3].forEach(teamId => {
                         const playerIds = teamAssignments[teamId] || [];
@@ -206,14 +198,7 @@
                         };
                     });
                     
-                    console.log('✅ Converted teams for games:', teams);
-                } else {
-                    console.log('⚠️ No teams found, using defaults');
-                    teams = {
-                        1: { name: 'Hold 1', members: [], score: 0 },
-                        2: { name: 'Hold 2', members: [], score: 0 },
-                        3: { name: 'Hold 3', members: [], score: 0 }
-                    };
+                    console.log('✅ Loaded teams for games:', teams);
                 }
             } catch (e) {
                 console.error('❌ Failed to load teams:', e);
@@ -282,12 +267,16 @@
         function setupEventListeners() {
             console.log('Setting up event listeners...');
             
-            // Game selection
-            gamesGrid.addEventListener('click', function(e) {
-                if (e.target.classList.contains('game-option') && !e.target.classList.contains('completed')) {
-                    console.log('Starting game:', e.target.dataset.game);
-                    startGame(e.target.dataset.game);
+            // Add game functionality
+            addGameBtn.addEventListener('click', addNewGame);
+            gameNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addNewGame();
                 }
+            });
+            
+            gameNameInput.addEventListener('input', function() {
+                addGameBtn.disabled = this.value.trim().length === 0;
             });
 
             // Team selection for places
@@ -303,55 +292,43 @@
             cancelGameBtn.addEventListener('click', cancelGame);
             
             finishTournamentBtn.addEventListener('click', function() {
-                if (completedGamesList.length >= 10) {
-                    alert('Konkurrencen er færdig! Tillykke til vinderne! 🎉');
+                if (completedGamesList.length >= 5) {
+                    if (confirm('Er du sikker på at konkurrencen er færdig?')) {
+                        showMessage('Konkurrencen er afsluttet! Tillykke til vinderne! 🎉');
+                        finishTournamentBtn.textContent = '🏆 Konkurrence Afsluttet';
+                        finishTournamentBtn.disabled = true;
+                    }
                 }
             });
         }
 
-        function renderGamesGrid() {
-            const completedGameNames = completedGamesList.map(game => game.name || game);
-            gamesGrid.innerHTML = availableGames.map(game => `
-                <div class="game-option ${completedGameNames.includes(game) ? 'completed' : ''}" 
-                     data-game="${game}">
-                    ${game}
-                </div>
-            `).join('');
-        }
-
-        function renderStandings() {
-            // Sort teams by score
-            const sortedTeams = Object.entries(teams)
-                .sort(([,a], [,b]) => b.score - a.score)
-                .map(([id, team], index) => ({
-                    id,
-                    ...team,
-                    position: index + 1
-                }));
-
-            standingsGrid.innerHTML = sortedTeams.map(team => `
-                <div class="team-standing ${getPositionClass(team.position)}">
-                    <div class="standing-position">${team.position}</div>
-                    <div class="standing-info">
-                        <div class="standing-team">${team.name}</div>
-                        <div class="standing-members">${team.members.join(', ')}</div>
-                    </div>
-                    <div class="standing-score">${team.score}</div>
-                </div>
-            `).join('');
-        }
-
-        function getPositionClass(position) {
-            switch(position) {
-                case 1: return 'first';
-                case 2: return 'second';
-                case 3: return 'third';
-                default: return '';
+        function addNewGame() {
+            const gameName = gameNameInput.value.trim();
+            
+            if (gameName === '') {
+                showMessage('Indtast et spilnavn', '#FF5252');
+                return;
             }
+            
+            // Check if game already exists
+            const existingGame = completedGamesList.find(game => {
+                const name = typeof game === 'string' ? game : game.name;
+                return name.toLowerCase() === gameName.toLowerCase();
+            });
+            
+            if (existingGame) {
+                showMessage('Dette spil er allerede gennemført', '#FF5252');
+                return;
+            }
+            
+            // Start the game
+            startGame(gameName);
+            gameNameInput.value = '';
+            addGameBtn.disabled = true;
         }
 
         function startGame(gameName) {
-            console.log('Starting game:', gameName);
+            console.log('Starting custom game:', gameName);
             currentGame = gameName;
             gameResults = {};
             
@@ -448,18 +425,13 @@
             
             // Update UI
             renderStandings();
-            renderGamesGrid();
             updateCompletedGames();
+            updateFinishButton();
             
             // Return to game selection
             activeGameView.style.display = 'none';
             gameSelectionView.style.display = 'block';
             currentGame = null;
-            
-            // Check if tournament is complete
-            if (completedGamesList.length >= 10) {
-                finishTournamentBtn.disabled = false;
-            }
             
             // Show success message
             const winner = teams[gameResults[1]];
@@ -473,6 +445,37 @@
             gameResults = {};
         }
 
+        function renderStandings() {
+            // Sort teams by score
+            const sortedTeams = Object.entries(teams)
+                .sort(([,a], [,b]) => b.score - a.score)
+                .map(([id, team], index) => ({
+                    id,
+                    ...team,
+                    position: index + 1
+                }));
+
+            standingsGrid.innerHTML = sortedTeams.map(team => `
+                <div class="team-standing ${getPositionClass(team.position)}">
+                    <div class="standing-position">${team.position}</div>
+                    <div class="standing-info">
+                        <div class="standing-team">${team.name}</div>
+                        <div class="standing-members">${team.members.join(', ')}</div>
+                    </div>
+                    <div class="standing-score">${team.score}</div>
+                </div>
+            `).join('');
+        }
+
+        function getPositionClass(position) {
+            switch(position) {
+                case 1: return 'first';
+                case 2: return 'second';
+                case 3: return 'third';
+                default: return '';
+            }
+        }
+
         function updateCompletedGames() {
             completedCount.textContent = completedGamesList.length;
             
@@ -481,26 +484,74 @@
                 return;
             }
             
-            completedGamesContainer.innerHTML = completedGamesList.map(game => {
+            completedGamesContainer.innerHTML = completedGamesList.map((game, index) => {
                 const gameData = typeof game === 'string' ? { name: game } : game;
                 const winner = gameData.results ? teams[gameData.results[1]] : null;
                 return `
                     <div class="completed-game">
-                        <div class="completed-game-name">${gameData.name}</div>
-                        <div class="completed-game-result">${winner ? `Vinder: ${winner.name}` : 'Resultat gemt'}</div>
+                        <div class="completed-game-info">
+                            <div class="completed-game-name">${gameData.name}</div>
+                            <div class="completed-game-result">${winner ? `Vinder: ${winner.name}` : 'Resultat gemt'}</div>
+                        </div>
+                        <button class="delete-game-btn" onclick="deleteGame(${index})" title="Slet spil">
+                            🗑️
+                        </button>
                     </div>
                 `;
             }).join('');
         }
 
-        function showMessage(message) {
+        function deleteGame(gameIndex) {
+            if (confirm('Er du sikker på at du vil slette dette spil? Point vil blive trukket fra.')) {
+                const gameToDelete = completedGamesList[gameIndex];
+                
+                // Remove points from teams
+                if (gameToDelete.results) {
+                    const points = { 1: 2, 2: 1, 3: 0 };
+                    Object.entries(gameToDelete.results).forEach(([place, teamId]) => {
+                        if (teams[teamId]) {
+                            teams[teamId].score -= points[place];
+                            if (teams[teamId].score < 0) teams[teamId].score = 0;
+                        }
+                    });
+                }
+                
+                // Remove from list
+                completedGamesList.splice(gameIndex, 1);
+                
+                // Save and update
+                saveGameData();
+                renderStandings();
+                updateCompletedGames();
+                updateFinishButton();
+                
+                showMessage('Spil slettet og point justeret');
+            }
+        }
+
+        function updateFinishButton() {
+            const minGames = 5;
+            finishTournamentBtn.disabled = completedGamesList.length < minGames;
+            
+            const finishHint = document.querySelector('.finish-hint');
+            if (completedGamesList.length >= minGames) {
+                finishHint.textContent = 'Klar til at afslutte konkurrencen!';
+                finishHint.style.color = '#4ECDC4';
+            } else {
+                const remaining = minGames - completedGamesList.length;
+                finishHint.textContent = `Gennemfør ${remaining} spil mere for at afslutte`;
+                finishHint.style.color = '#999';
+            }
+        }
+
+        function showMessage(message, color = '#4ECDC4') {
             const messageDiv = document.createElement('div');
             messageDiv.style.cssText = `
                 position: fixed;
                 top: 20px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: #4ECDC4;
+                background: ${color};
                 color: white;
                 padding: 12px 20px;
                 border-radius: 8px;
@@ -528,4 +579,3 @@
     </script>
 </body>
 </html>
-
