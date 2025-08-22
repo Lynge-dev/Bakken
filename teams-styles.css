@@ -1,0 +1,531 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header Styles */
+.app-header {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 15px 0;
+}
+
+.app-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 5px;
+}
+
+.app-subtitle {
+    font-size: 1rem;
+    color: #fff;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Navigation */
+.navigation-section {
+    margin-bottom: 10px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Team Names Section */
+.team-names-section {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.team-names-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.team-name-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-name-input label {
+    font-weight: bold;
+    min-width: 60px;
+    color: #333;
+}
+
+.team-name-input input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.team-name-input input:focus {
+    outline: none;
+    border-color: #4ECDC4;
+}
+
+.team-name-input:nth-child(1) input { border-left-color: #FF6B6B; }
+.team-name-input:nth-child(2) input { border-left-color: #4ECDC4; }
+.team-name-input:nth-child(3) input { border-left-color: #45B7D1; }
+
+/* Section Titles */
+.section-title {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-count-badge {
+    background: #4ECDC4;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Controls */
+.controls-section {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn.primary {
+    background: #4ECDC4;
+    color: white;
+}
+
+.control-btn.primary:hover {
+    background: #45B7D1;
+    transform: translateY(-2px);
+}
+
+.control-btn.secondary {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.control-btn.secondary:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* Unassigned Players */
+.unassigned-section {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-height: 120px;
+}
+
+.players-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 60px;
+    align-content: flex-start;
+    padding: 10px;
+    border: 2px dashed transparent;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.players-pool.empty::before {
+    content: "Alle spillere er tildelt hold 🎉";
+    color: #4ECDC4;
+    font-style: italic;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.players-pool.drag-over {
+    border-color: #4ECDC4;
+    background: rgba(78, 205, 196, 0.1);
+}
+
+/* Teams */
+.teams-section {
+    flex: 1;
+}
+
+.teams-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.team-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: all 0.3s ease;
+}
+
+.team-card[data-team="1"]::before {
+    background: linear-gradient(90deg, #FF6B6B, #FF5252);
+}
+
+.team-card[data-team="2"]::before {
+    background: linear-gradient(90deg, #4ECDC4, #45B7D1);
+}
+
+.team-card[data-team="3"]::before {
+    background: linear-gradient(90deg, #45B7D1, #42A5F5);
+}
+
+.team-card.drag-over {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #4ECDC4;
+}
+
+.team-card.drag-over::before {
+    height: 8px;
+    background: linear-gradient(90deg, #4ECDC4, #45B7D1) !important;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.team-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-color-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.team-1-color { background: #FF6B6B; }
+.team-2-color { background: #4ECDC4; }
+.team-3-color { background: #45B7D1; }
+
+.team-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.team-count {
+    background: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: bold;
+}
+
+.team-players {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 60px;
+    align-content: flex-start;
+    padding: 10px;
+    border: 2px dashed transparent;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.team-players.empty::before {
+    content: "Træk spillere hertil";
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.team-players.drag-over {
+    border-color: #4ECDC4;
+    background: rgba(78, 205, 196, 0.1);
+}
+
+.team-card.drag-over .team-players.empty::before {
+    content: "Slip for at tilføje til holdet";
+    color: #4ECDC4;
+    font-weight: bold;
+}
+
+/* Player Chips */
+.player-chip {
+    background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: grab;
+    transition: all 0.3s ease;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+    touch-action: none;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.player-chip:active,
+.player-chip.dragging {
+    cursor: grabbing;
+    opacity: 0.8;
+    transform: scale(1.05) rotate(3deg);
+    z-index: 1000;
+}
+
+.player-chip.in-team-1 {
+    background: linear-gradient(45deg, #FF6B6B, #FF5252);
+}
+
+.player-chip.in-team-2 {
+    background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+}
+
+.player-chip.in-team-3 {
+    background: linear-gradient(45deg, #45B7D1, #42A5F5);
+}
+
+/* Drag Ghost */
+.drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2000;
+    opacity: 0;
+    transform: scale(1.1) rotate(5deg);
+    transition: opacity 0.2s ease;
+    background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.drag-ghost.visible {
+    opacity: 0.9;
+}
+
+/* Continue Button */
+.action-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.continue-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(45deg, #4ECDC4, #45B7D1);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.continue-btn:enabled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.continue-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.requirement-text {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.player-chip.just-added {
+    animation: slideIn 0.4s ease, pulse 0.6s ease 0.4s;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .app-title {
+        font-size: 1.8rem;
+    }
+    
+    .control-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .control-btn {
+        padding: 15px;
+    }
+    
+    .player-chip {
+        min-height: 48px;
+        padding: 12px 16px;
+        font-size: 1rem;
+    }
+    
+    .teams-grid {
+        gap: 12px;
+    }
+    
+    .team-name-input {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .team-name-input label {
+        min-width: auto;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .player-chip:hover,
+    .continue-btn:enabled:hover,
+    .control-btn:hover {
+        transform: none;
+    }
+    
+    .player-chip:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .team-card {
+        border: 2px solid #333;
+    }
+    
+    .player-chip {
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+}

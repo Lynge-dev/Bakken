@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Håndæg og Håndbajere - Spil</title>
+    <link rel="stylesheet" href="games-styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="app-title">🎪 Håndæg og Håndbajere</h1>
+            <p class="app-subtitle">Spil og Point</p>
+        </header>
+
+        <!-- Current Standings -->
+        <section class="standings-section">
+            <h2 class="section-title">🏆 Stillinger</h2>
+            <div class="standings-grid" id="standingsGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Current Game or Game Selection -->
+        <section class="game-section">
+            <!-- Game Selection View -->
+            <div id="gameSelectionView" class="game-selection">
+                <h2 class="section-title">🎯 Vælg Næste Spil</h2>
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Games will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Active Game View -->
+            <div id="activeGameView" class="active-game" style="display: none;">
+                <h2 class="section-title">🎮 Nuværende Spil</h2>
+                <div class="current-game-card">
+                    <h3 id="currentGameName" class="game-name">Spil Navn</h3>
+                    <p class="game-instruction">Spil spillet og vælg vinderne:</p>
+                    
+                    <div class="winner-selection">
+                        <div class="winner-card" data-place="1">
+                            <div class="place-badge first">1.</div>
+                            <div class="place-info">
+                                <span class="place-label">Vinder</span>
+                                <span class="place-points">2 point</span>
+                            </div>
+                            <div class="team-buttons">
+                                <button class="team-btn team-1" data-team="1">Hold 1</button>
+                                <button class="team-btn team-2" data-team="2">Hold 2</button>
+                                <button class="team-btn team-3" data-team="3">Hold 3</button>
+                            </div>
+                        </div>
+
+                        <div class="winner-card" data-place="2">
+                            <div class="place-badge second">2.</div>
+                            <div class="place-info">
+                                <span class="place-label">Anden</span>
+                                <span class="place-points">1 point</span>
+                            </div>
+                            <div class="team-buttons">
+                                <button class="team-btn team-1" data-team="1">Hold 1</button>
+                                <button class="team-btn team-2" data-team="2">Hold 2</button>
+                                <button class="team-btn team-3" data-team="3">Hold 3</button>
+                            </div>
+                        </div>
+
+                        <div class="winner-card" data-place="3">
+                            <div class="place-badge third">3.</div>
+                            <div class="place-info">
+                                <span class="place-label">Tredje</span>
+                                <span class="place-points">0 point</span>
+                            </div>
+                            <div class="team-buttons">
+                                <button class="team-btn team-1" data-team="1">Hold 1</button>
+                                <button class="team-btn team-2" data-team="2">Hold 2</button>
+                                <button class="team-btn team-3" data-team="3">Hold 3</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-actions">
+                        <button id="confirmResultBtn" class="action-btn primary" disabled>
+                            ✅ Bekræft Resultat
+                        </button>
+                        <button id="cancelGameBtn" class="action-btn secondary">
+                            ❌ Annuller Spil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Completed Games -->
+        <section class="completed-section">
+            <h2 class="section-title">📋 Gennemførte Spil (<span id="completedCount">0</span>/10)</h2>
+            <div class="completed-games" id="completedGames">
+                <p class="no-games">Ingen spil gennemført endnu</p>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="navigation-section">
+            <button id="backToTeamsBtn" class="nav-btn secondary">
+                ← Tilbage til Hold
+            </button>
+            <button id="finishTournamentBtn" class="nav-btn primary" disabled>
+                🎉 Afslut Konkurrence
+            </button>
+        </section>
+    </div>
+
+    <script src="games-script.js"></script>
+</body>
+</html>

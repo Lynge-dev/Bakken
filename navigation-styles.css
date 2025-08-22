@@ -1,0 +1,379 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+.app-header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.app-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 8px;
+}
+
+.app-subtitle {
+    font-size: 1.1rem;
+    color: #fff;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Year Section */
+.year-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.year-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.year-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.year-btn.new-year {
+    background: #4ECDC4;
+    color: white;
+    font-weight: bold;
+}
+
+.year-btn.new-year:hover {
+    background: #45B7D1;
+    transform: translateY(-2px);
+}
+
+.year-btn.previous {
+    background: #f8f9fa;
+    color: #666;
+    border: 2px solid #e9ecef;
+}
+
+.year-btn.previous:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.previous-years {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Navigation */
+.nav-title {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.nav-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-card.players::before { background: #FF6B6B; }
+.nav-card.teams::before { background: #4ECDC4; }
+.nav-card.games::before { background: #45B7D1; }
+.nav-card.photos::before { background: #FF9F43; }
+
+.nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.nav-card:hover::before {
+    height: 8px;
+}
+
+.nav-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.nav-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.nav-card p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.nav-status {
+    background: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.nav-card.completed .nav-status {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Previous Year View */
+.year-header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+#viewingYearTitle {
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.year-summary {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.summary-section {
+    margin-bottom: 20px;
+}
+
+.summary-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.summary-teams {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #ddd;
+}
+
+.summary-team.first { border-left-color: #FFD700; }
+.summary-team.second { border-left-color: #C0C0C0; }
+.summary-team.third { border-left-color: #CD7F32; }
+
+.summary-games {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.summary-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.summary-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.summary-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.summary-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #999;
+}
+
+/* Year Actions */
+.year-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.action-btn.delete {
+    background: #FF6B6B;
+    color: white;
+}
+
+.action-btn.delete:hover {
+    background: #FF5252;
+}
+
+.action-btn.export {
+    background: #4ECDC4;
+    color: white;
+}
+
+.action-btn.export:hover {
+    background: #45B7D1;
+}
+
+/* App Info */
+.app-info {
+    text-align: center;
+    margin-top: auto;
+    padding: 10px 0;
+}
+
+.app-version {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .app-title {
+        font-size: 1.8rem;
+    }
+    
+    .nav-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .nav-card {
+        padding: 15px;
+    }
+    
+    .nav-icon {
+        font-size: 2rem;
+    }
+    
+    .year-actions {
+        flex-direction: column;
+    }
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-card {
+    animation: slideIn 0.5s ease;
+}
+
+.nav-card:nth-child(1) { animation-delay: 0.1s; }
+.nav-card:nth-child(2) { animation-delay: 0.2s; }
+.nav-card:nth-child(3) { animation-delay: 0.3s; }
+.nav-card:nth-child(4) { animation-delay: 0.4s; }

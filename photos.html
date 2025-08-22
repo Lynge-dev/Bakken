@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Håndæg og Håndbajere - Fotos</title>
+    <link rel="stylesheet" href="photos-styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="app-title">🎪 Håndæg og Håndbajere</h1>
+            <p class="app-subtitle">Fotos og Minder</p>
+        </header>
+
+        <!-- Photo Mode Selector -->
+        <section class="mode-selector">
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="group">
+                    👨‍👩‍👧‍👦 Gruppefoto
+                </button>
+                <button class="mode-tab" data-mode="teams">
+                    👥 Hold Fotos
+                </button>
+                <button class="mode-tab" data-mode="export">
+                    📤 Eksporter
+                </button>
+            </div>
+        </section>
+
+        <!-- Group Photo Mode -->
+        <section id="groupMode" class="photo-mode active">
+            <h2 class="section-title">📸 Gruppefoto - Alle Sammen</h2>
+            
+            <div class="photo-card group-photo-card">
+                <div class="photo-preview" id="groupPhotoPreview">
+                    <div class="photo-placeholder">
+                        <div class="placeholder-icon">📷</div>
+                        <p>Tag et gruppefoto af alle spillere</p>
+                        <small>Tryk på kamera-knappen nedenfor</small>
+                    </div>
+                </div>
+                
+                <div class="photo-info">
+                    <h3>Alle Spillere</h3>
+                    <p class="participants-list" id="allParticipants">
+                        <!-- Will be populated with all player names -->
+                    </p>
+                </div>
+                
+                <div class="photo-actions">
+                    <button class="photo-btn camera" id="takeGroupPhoto">
+                        📷 Tag Foto
+                    </button>
+                    <button class="photo-btn upload" id="uploadGroupPhoto">
+                        📁 Upload Foto
+                    </button>
+                    <button class="photo-btn delete" id="deleteGroupPhoto" style="display: none;">
+                        🗑️ Slet Foto
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Photos Mode -->
+        <section id="teamsMode" class="photo-mode">
+            <h2 class="section-title">👥 Holdfotos</h2>
+            <div class="teams-photo-grid" id="teamsPhotoGrid">
+                <!-- Team photo cards will be generated here -->
+            </div>
+        </section>
+
+        <!-- Export Mode -->
+        <section id="exportMode" class="photo-mode">
+            <h2 class="section-title">📤 Eksporter Resultater</h2>
+            
+            <div class="export-options">
+                <div class="export-card">
+                    <h3>🏆 Slutresultater</h3>
+                    <p>Eksporter den endelige rangliste med alle spil og point</p>
+                    <button class="export-btn" id="exportResults">
+                        📊 Eksporter Resultater
+                    </button>
+                </div>
+
+                <div class="export-card">
+                    <h3>📸 Alle Fotos</h3>
+                    <p>Download alle fotos (gruppefoto + holdfotos) som ZIP fil</p>
+                    <button class="export-btn" id="exportPhotos">
+                        🖼️ Eksporter Fotos
+                    </button>
+                </div>
+
+                <div class="export-card">
+                    <h3>📱 Del Komplet Rapport</h3>
+                    <p>Lav en flot rapport med fotos og resultater til deling</p>
+                    <button class="export-btn primary" id="exportComplete">
+                        🎉 Lav Komplet Rapport
+                    </button>
+                </div>
+            </div>
+
+            <!-- Export Preview -->
+            <div class="export-preview" id="exportPreview" style="display: none;">
+                <h3>📋 Forhåndsvisning</h3>
+                <div class="preview-content" id="previewContent">
+                    <!-- Generated report preview will appear here -->
+                </div>
+                <div class="preview-actions">
+                    <button class="export-btn" id="downloadReport">
+                        💾 Download Rapport
+                    </button>
+                    <button class="export-btn" id="shareReport">
+                        📤 Del Rapport
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="navigation-section">
+            <button id="backToGamesBtn" class="nav-btn secondary">
+                ← Tilbage til Spil
+            </button>
+            <button id="homeBtn" class="nav-btn primary">
+                🏠 Forside
+            </button>
+        </section>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="groupFileInput" accept="image/*" capture="environment" style="display: none;">
+    <input type="file" id="teamFileInput" accept="image/*" capture="environment" style="display: none;">
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="photo-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Foto</h3>
+                <button id="closePhotoModal" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Foto">
+            </div>
+        </div>
+    </div>
+
+    <script src="photos-script.js"></script>
+</body>
+</html>
